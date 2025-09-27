@@ -32,6 +32,7 @@ type ISong interface {
 	Close() error
 	AddNote(frequency int, duration float64)
 	AddChord(notes []int, duration float64)
+	AddOvertoneNotes(note int, duration float64, overtones int)
 }
 
 // Play plays the generated sound file
@@ -96,10 +97,45 @@ func (s *SongImpl) AddChord(notes []int, duration float64) {
 	for i := 0; i < int(numberSamples); i++ {
 		accumulator := make([]float64, 0, len(notes)) // Initialize with 0 length but capacity of len(notes)
 		for _, note := range notes {
-			accumulator = append(accumulator, math.Sin(angle*float64(s.BaseFrequency*note/s.BaseNote)*float64(i)))
+			sample := math.Sin(angle * float64(s.BaseFrequency*note/s.BaseNote) * float64(i))
+			accumulator = append(accumulator, sample)
 		}
 		var buf [4]byte
 		binary.LittleEndian.PutUint32(buf[:], math.Float32bits(float32(sum(accumulator))))
+		_, err := s.file.Write(buf[:])
+		if err != nil {
+			fmt.Println("Error writing to file:", err)
+			return
+		}
+	}
+}
+
+// AddOvertoneNotes adds a note with harmonic overtones following the square wave formula
+// A_n = A₁ · |sin(nπ/2)| / n²
+func (s *SongImpl) AddOvertoneNotes(note int, duration float64, overtones int) {
+	s.TotalDuration += duration
+	var numberSamples float64 = duration * s.SampleRate
+	var angle float64 = Tau / numberSamples
+
+	// Calculate the fundamental frequency
+	fundamental := float64(s.BaseFrequency * note / s.BaseNote)
+
+	for i := 0; i < int(numberSamples); i++ {
+		// Start with just the fundamental (n=1)
+		var sample float64
+
+		// Add the fundamental and all odd harmonics up to the specified overtone count
+		// For a square wave, only odd harmonics (n=1,3,5,7...) have non-zero amplitudes
+		for n := 1; n <= overtones*2; n += 2 { // Only odd harmonics
+			// Calculate amplitude using the square wave formula: A_n = A₁ / n²
+			amplitude := 1.0 / float64(n*n)
+
+			// Add this harmonic to the sample
+			sample += amplitude * math.Sin(angle*fundamental*float64(n)*float64(i))
+		}
+
+		var buf [4]byte
+		binary.LittleEndian.PutUint32(buf[:], math.Float32bits(float32(sample)))
 		_, err := s.file.Write(buf[:])
 		if err != nil {
 			fmt.Println("Error writing to file:", err)
