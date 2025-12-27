@@ -40,17 +40,27 @@ func (c *JustIntonationComposition) Play() error {
 
 	// Base octave - using only 5-odd limit ratios
 	C4 := 24 // C4 = 1:1 = 24:24 (unison)
+	fmt.Printf("C4: %d\n", C4)
 	D4 := 27 // D4 = 9:8 = 27:24 (major whole tone)
+	fmt.Printf("D4: %d\n", D4)
 	E4 := 30 // E4 = 5:4 = 30:24 (major third)
+	fmt.Printf("E4: %d\n", E4)
 	F4 := 32 // F4 = 4:3 = 32:24 (perfect fourth)
+	fmt.Printf("F4: %d\n", F4)
 	G4 := 36 // G4 = 3:2 = 36:24 (perfect fifth)
+	fmt.Printf("G4: %d\n", G4)
 	A4 := 40 // A4 = 5:3 = 40:24 (major sixth)
+	fmt.Printf("A4: %d\n", A4)
 	B4 := 45 // B4 = 15:8 = 45:24 (major seventh)
+	fmt.Printf("B4: %d\n", B4)
 	C5 := 48 // C5 = 2:1 = 48:24 (octave)
+	fmt.Printf("C5: %d\n", C5)
 
 	// Lower octave
 	C3 := 12 // C3 = 1:2 = 12:24 (octave below)
+	fmt.Printf("C3: %d\n", C3)
 	G3 := 18 // G3 = 3:4 = 18:24 (fifth below C4)
+	fmt.Printf("G3: %d\n", G3)
 
 	// Note durations
 	veryShortDur := 0.125 // 1/8 note
