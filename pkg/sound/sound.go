@@ -18,7 +18,8 @@ type Song struct {
 	BaseNote      int
 	SampleRate    float64
 	TotalDuration float64
-	phase         float64 // Phase accumulator for continuous waveform
+	phase         float64         // Global phase for sequential single notes (continuity)
+	notePhases    map[int]float64 // Phase accumulator per note value for chords
 }
 
 // SongImpl implements the Song interface
@@ -65,6 +66,7 @@ func (s *SongImpl) AddNote(note int, duration float64) {
 	frequency := float64(s.BaseFrequency*note) / float64(s.BaseNote)
 	phaseIncrement := Tau * frequency / s.SampleRate
 
+	// Use global phase for sequential single notes (ensures continuity)
 	for i := 0; i < int(numberSamples); i++ {
 		sample := math.Sin(s.phase)
 		s.phase += phaseIncrement
@@ -102,13 +104,50 @@ func (s *SongImpl) AddChord(notes []int, duration float64) {
 	s.TotalDuration += duration
 	var numberSamples float64 = duration * s.SampleRate
 
+	// Find the lowest frequency note (minimum note value)
+	if len(notes) == 0 {
+		return
+	}
+	lowestNote := notes[0]
+	for _, note := range notes[1:] {
+		if note < lowestNote {
+			lowestNote = note
+		}
+	}
+
+	// Initialize phases for all notes before the loop
+	// For the lowest frequency note: use notePhases if exists, otherwise use global phase
+	// For other notes: use notePhases if exists, otherwise initialize to 0
+	for _, note := range notes {
+		if _, exists := s.notePhases[note]; !exists {
+			if note == lowestNote {
+				// Lowest note uses global phase as reference
+				s.notePhases[note] = s.phase
+			} else {
+				// Other notes start at 0
+				s.notePhases[note] = 0
+			}
+		}
+	}
+
 	for i := 0; i < int(numberSamples); i++ {
 		accumulator := make([]float64, 0, len(notes)) // Initialize with 0 length but capacity of len(notes)
 		for _, note := range notes {
 			frequency := float64(s.BaseFrequency*note) / float64(s.BaseNote)
-			angle := Tau * frequency / s.SampleRate
-			sample := math.Sin(angle * float64(i))
+			phaseIncrement := Tau * frequency / s.SampleRate
+
+			// Get phase for this note (already initialized above)
+			phase := s.notePhases[note]
+
+			sample := math.Sin(phase)
 			accumulator = append(accumulator, sample)
+
+			// Update phase for this note
+			phase += phaseIncrement
+			if phase >= Tau {
+				phase -= Tau
+			}
+			s.notePhases[note] = phase
 		}
 		var buf [4]byte
 		binary.LittleEndian.PutUint32(buf[:], math.Float32bits(float32(sum(accumulator))))
@@ -130,6 +169,7 @@ func (s *SongImpl) AddOvertoneNotes(note int, duration float64, overtones int) {
 	fundamental := float64(s.BaseFrequency*note) / float64(s.BaseNote)
 	phaseIncrement := Tau * fundamental / s.SampleRate
 
+	// Use global phase for sequential single notes
 	for i := 0; i < int(numberSamples); i++ {
 		// Start with just the fundamental (n=1)
 		var sample float64
@@ -175,6 +215,7 @@ func NewSong(fileName string, sampleRate float64, baseFrequency int, baseNote in
 		BaseFrequency: baseFrequency,
 		BaseNote:      baseNote,
 		phase:         0,
+		notePhases:    make(map[int]float64),
 	}}
 }
 

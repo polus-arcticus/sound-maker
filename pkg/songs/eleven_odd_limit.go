@@ -58,7 +58,7 @@ func (c *ElevenOddLimitComposition) Play() error {
 		11/6
 		2
 	*/
-
+	eighth := 0.125 // 1/8 note
 	quarter := 0.25 // 1/4 note
 	half := 0.5     // 1/2 note
 	whole := 1.0    // 1/1 note
@@ -123,79 +123,100 @@ func (c *ElevenOddLimitComposition) Play() error {
 	fmt.Printf("twentyninthTone: %d\n", twentyninthTone)
 	thirtiethTone := unison * 2 //  thirtieth = 2 = 2310 * 2 = 4620
 	fmt.Printf("thirtiethTone: %d\n", thirtiethTone)
-	song.AddNote(unison, quarter)
-	song.AddNote(secondTone, quarter)
-	song.AddNote(thirdTone, quarter)
-	song.AddNote(forthTone, quarter)
-	song.AddNote(fifthTone, quarter)
-	song.AddNote(sixthTone, quarter)
-	song.AddNote(seventhTone, quarter)
-	song.AddNote(eighthTone, quarter)
-	song.AddNote(ninthTone, quarter)
-	song.AddNote(tenthTone, quarter)
-	song.AddNote(eleventhTone, quarter)
-	song.AddNote(twelfthTone, quarter)
-	song.AddNote(thirteenthTone, quarter)
-	song.AddNote(fourteenthTone, quarter)
-	song.AddNote(fifteenthTone, quarter)
-	song.AddNote(sixteenthTone, quarter)
-	song.AddNote(seventeenthTone, quarter)
-	song.AddNote(eighteenthTone, quarter)
-	song.AddNote(nineteenthTone, quarter)
-	song.AddNote(twentiethTone, quarter)
-	song.AddNote(twentyfirstTone, quarter)
-	song.AddNote(twentysecondTone, quarter)
-	song.AddNote(twentythirdTone, quarter)
-	song.AddNote(twentyfourthTone, quarter)
-	song.AddNote(twentyfifthTone, quarter)
-	song.AddNote(twentysixthTone, quarter)
-	song.AddNote(twentyseventhTone, quarter)
-	song.AddNote(twentyeighthTone, quarter)
-	song.AddNote(twentyninthTone, quarter)
-	song.AddNote(thirtiethTone, quarter)
+	/*
+		song.AddNote(unison, eighth)
+		song.AddNote(secondTone, eighth)
+		song.AddNote(thirdTone, eighth)
+		song.AddNote(forthTone, eighth)
+		song.AddNote(fifthTone, eighth)
+		song.AddNote(sixthTone, eighth)
+		song.AddNote(seventhTone, eighth)
+		song.AddNote(eighthTone, eighth)
+		song.AddNote(ninthTone, eighth)
+		song.AddNote(tenthTone, eighth)
+		song.AddNote(eleventhTone, eighth)
+		song.AddNote(twelfthTone, eighth)
+		song.AddNote(thirteenthTone, eighth)
+		song.AddNote(fourteenthTone, eighth)
+		song.AddNote(fifteenthTone, eighth)
+		song.AddNote(sixteenthTone, eighth)
+		song.AddNote(seventeenthTone, eighth)
+		song.AddNote(eighteenthTone, eighth)
+		song.AddNote(nineteenthTone, eighth)
+		song.AddNote(twentiethTone, eighth)
+		song.AddNote(twentyfirstTone, eighth)
+		song.AddNote(twentysecondTone, eighth)
+		song.AddNote(twentythirdTone, eighth)
+		song.AddNote(twentyfourthTone, eighth)
+		song.AddNote(twentyfifthTone, eighth)
+		song.AddNote(twentysixthTone, eighth)
+		song.AddNote(twentyseventhTone, eighth)
+		song.AddNote(twentyeighthTone, eighth)
+		song.AddNote(twentyninthTone, eighth)
+		song.AddNote(thirtiethTone, eighth)
 
-	song.AddNote(thirtiethTone, quarter)
-	song.AddNote(twentyninthTone, quarter)
-	song.AddNote(twentyeighthTone, quarter)
-	song.AddNote(twentyseventhTone, quarter)
-	song.AddNote(twentysixthTone, quarter)
-	song.AddNote(twentyfifthTone, quarter)
-	song.AddNote(twentyfourthTone, quarter)
-	song.AddNote(twentythirdTone, quarter)
-	song.AddNote(twentysecondTone, quarter)
-	song.AddNote(twentyfirstTone, quarter)
-	song.AddNote(twentiethTone, quarter)
-	song.AddNote(nineteenthTone, quarter)
-	song.AddNote(eighteenthTone, quarter)
-	song.AddNote(seventeenthTone, quarter)
-	song.AddNote(sixteenthTone, quarter)
-	song.AddNote(fifteenthTone, quarter)
-	song.AddNote(fourteenthTone, quarter)
-	song.AddNote(thirteenthTone, quarter)
-	song.AddNote(twelfthTone, quarter)
-	song.AddNote(eleventhTone, quarter)
-	song.AddNote(tenthTone, quarter)
-	song.AddNote(ninthTone, quarter)
-	song.AddNote(eighthTone, quarter)
-	song.AddNote(seventhTone, quarter)
-	song.AddNote(sixthTone, quarter)
-	song.AddNote(fifthTone, quarter)
-	song.AddNote(forthTone, quarter)
-	song.AddNote(thirdTone, quarter)
-	song.AddNote(secondTone, quarter)
-	song.AddNote(unison, quarter)
-
+		song.AddNote(thirtiethTone, eighth)
+		song.AddNote(twentyninthTone, eighth)
+		song.AddNote(twentyeighthTone, eighth)
+		song.AddNote(twentyseventhTone, eighth)
+		song.AddNote(twentysixthTone, eighth)
+		song.AddNote(twentyfifthTone, eighth)
+		song.AddNote(twentyfourthTone, eighth)
+		song.AddNote(twentythirdTone, eighth)
+		song.AddNote(twentysecondTone, eighth)
+		song.AddNote(twentyfirstTone, eighth)
+		song.AddNote(twentiethTone, eighth)
+		song.AddNote(nineteenthTone, eighth)
+		song.AddNote(eighteenthTone, eighth)
+		song.AddNote(seventeenthTone, eighth)
+		song.AddNote(sixteenthTone, eighth)
+		song.AddNote(fifteenthTone, eighth)
+		song.AddNote(fourteenthTone, eighth)
+		song.AddNote(thirteenthTone, eighth)
+		song.AddNote(twelfthTone, eighth)
+		song.AddNote(eleventhTone, eighth)
+		song.AddNote(tenthTone, eighth)
+		song.AddNote(ninthTone, eighth)
+		song.AddNote(eighthTone, eighth)
+		song.AddNote(seventhTone, eighth)
+		song.AddNote(sixthTone, eighth)
+		song.AddNote(fifthTone, eighth)
+		song.AddNote(forthTone, eighth)
+		song.AddNote(thirdTone, eighth)
+		song.AddNote(secondTone, eighth)
+		song.AddNote(unison, eighth)
+	*/
 	// 5-limit major triad (pure just intonation)
 	// 4:5:6 = 1/1 : 5/4 : 3/2
+	song.AddChord([]int{unison, fifthTone, sixthTone}, eighth)
 	song.AddChord([]int{unison, tenthTone, eighteenthTone}, quarter)
-	song.AddChord([]int{unison, tenthTone, eighteenthTone}, half)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, quarter)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, half)
 	song.AddChord([]int{unison, tenthTone, eighteenthTone}, whole)
+
+	//Otonality
+	// 11-odd limit otonality scale: ratios 8:9:10:11:12 (harmonic series with same denominator)
+	// 8/8 (1/1), 9/8, 10/8 (5/4), 11/8, 12/8 (3/2)
+	fmt.Println("Playing 11-odd limit otonality scale...")
+	song.AddNote(unison, quarter)         // 8/8 = 1/1
+	song.AddNote(fifthTone, quarter)      // 9/8
+	song.AddNote(tenthTone, quarter)      // 10/8 = 5/4
+	song.AddNote(fourteenthTone, quarter) // 11/8
+	song.AddNote(eighteenthTone, quarter) // 12/8 = 3/2
+
+	//Utonality
+	// 11-odd limit utonality scale: ratios with 11 in numerator (subharmonic series)
+	// 11/11 (1/1), 11/10, 11/9, 11/8, 11/7, 11/6
+	fmt.Println("Playing 11-odd limit utonality scale...")
+	song.AddNote(unison, quarter)          // 11/11 = 1/1
+	song.AddNote(thirdTone, quarter)       // 11/10
+	song.AddNote(ninthTone, quarter)       // 11/9
+	song.AddNote(fourteenthTone, quarter)  // 11/8
+	song.AddNote(twentiethTone, quarter)   // 11/7
+	song.AddNote(twentyninthTone, quarter) // 11/6
 
 	// 7-limit dominant seventh (septimal)
 	// 4:5:6:7 = 1/1 : 5/4 : 3/2 : 7/4
-	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, quarter)
-	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, half)
-	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, whole)
 
 	/*
 		// 5-limit minor triad
