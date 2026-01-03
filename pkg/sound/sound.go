@@ -18,6 +18,7 @@ type Song struct {
 	BaseNote      int
 	SampleRate    float64
 	TotalDuration float64
+	phase         float64 // Phase accumulator for continuous waveform
 }
 
 // SongImpl implements the Song interface
@@ -61,10 +62,18 @@ func (s *SongImpl) Close() error {
 func (s *SongImpl) AddNote(note int, duration float64) {
 	s.TotalDuration += duration
 	var numberSamples float64 = duration * s.SampleRate
-	var angle float64 = Tau / numberSamples
+	frequency := float64(s.BaseFrequency*note) / float64(s.BaseNote)
+	phaseIncrement := Tau * frequency / s.SampleRate
 
 	for i := 0; i < int(numberSamples); i++ {
-		sample := math.Sin(angle * float64(s.BaseFrequency*note/s.BaseNote) * float64(i))
+		sample := math.Sin(s.phase)
+		s.phase += phaseIncrement
+
+		// Keep phase in [0, 2π) range to prevent precision loss
+		if s.phase >= Tau {
+			s.phase -= Tau
+		}
+
 		var buf [4]byte
 		binary.LittleEndian.PutUint32(buf[:], math.Float32bits(float32(sample)))
 		_, err := s.file.Write(buf[:])
@@ -92,12 +101,13 @@ func sum(values []float64) float64 {
 func (s *SongImpl) AddChord(notes []int, duration float64) {
 	s.TotalDuration += duration
 	var numberSamples float64 = duration * s.SampleRate
-	var angle float64 = Tau / numberSamples
 
 	for i := 0; i < int(numberSamples); i++ {
 		accumulator := make([]float64, 0, len(notes)) // Initialize with 0 length but capacity of len(notes)
 		for _, note := range notes {
-			sample := math.Sin(angle * float64(s.BaseFrequency*note/s.BaseNote) * float64(i))
+			frequency := float64(s.BaseFrequency*note) / float64(s.BaseNote)
+			angle := Tau * frequency / s.SampleRate
+			sample := math.Sin(angle * float64(i))
 			accumulator = append(accumulator, sample)
 		}
 		var buf [4]byte
@@ -115,10 +125,10 @@ func (s *SongImpl) AddChord(notes []int, duration float64) {
 func (s *SongImpl) AddOvertoneNotes(note int, duration float64, overtones int) {
 	s.TotalDuration += duration
 	var numberSamples float64 = duration * s.SampleRate
-	var angle float64 = Tau / numberSamples
 
 	// Calculate the fundamental frequency
-	fundamental := float64(s.BaseFrequency * note / s.BaseNote)
+	fundamental := float64(s.BaseFrequency*note) / float64(s.BaseNote)
+	phaseIncrement := Tau * fundamental / s.SampleRate
 
 	for i := 0; i < int(numberSamples); i++ {
 		// Start with just the fundamental (n=1)
@@ -130,8 +140,15 @@ func (s *SongImpl) AddOvertoneNotes(note int, duration float64, overtones int) {
 			// Calculate amplitude using the square wave formula: A_n = A₁ / n²
 			amplitude := 1.0 / float64(n*n)
 
-			// Add this harmonic to the sample
-			sample += amplitude * math.Sin(angle*fundamental*float64(n)*float64(i))
+			// Add this harmonic to the sample (multiply phase by harmonic number)
+			sample += amplitude * math.Sin(s.phase*float64(n))
+		}
+
+		s.phase += phaseIncrement
+
+		// Keep phase in [0, 2π) range to prevent precision loss
+		if s.phase >= Tau {
+			s.phase -= Tau
 		}
 
 		var buf [4]byte
@@ -157,6 +174,7 @@ func NewSong(fileName string, sampleRate float64, baseFrequency int, baseNote in
 		TotalDuration: 0,
 		BaseFrequency: baseFrequency,
 		BaseNote:      baseNote,
+		phase:         0,
 	}}
 }
 

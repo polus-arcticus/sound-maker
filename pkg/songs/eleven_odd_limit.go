@@ -59,7 +59,9 @@ func (c *ElevenOddLimitComposition) Play() error {
 		2
 	*/
 
-	shortDur := 0.25 // 1/4 note
+	quarter := 0.25 // 1/4 note
+	half := 0.5     // 1/2 note
+	whole := 1.0    // 1/1 note
 
 	unison := 2310 // unison = 1:1 = 2310:2310 (unison)
 	fmt.Printf("unison: %d\n", unison)
@@ -121,37 +123,113 @@ func (c *ElevenOddLimitComposition) Play() error {
 	fmt.Printf("twentyninthTone: %d\n", twentyninthTone)
 	thirtiethTone := unison * 2 //  thirtieth = 2 = 2310 * 2 = 4620
 	fmt.Printf("thirtiethTone: %d\n", thirtiethTone)
+	song.AddNote(unison, quarter)
+	song.AddNote(secondTone, quarter)
+	song.AddNote(thirdTone, quarter)
+	song.AddNote(forthTone, quarter)
+	song.AddNote(fifthTone, quarter)
+	song.AddNote(sixthTone, quarter)
+	song.AddNote(seventhTone, quarter)
+	song.AddNote(eighthTone, quarter)
+	song.AddNote(ninthTone, quarter)
+	song.AddNote(tenthTone, quarter)
+	song.AddNote(eleventhTone, quarter)
+	song.AddNote(twelfthTone, quarter)
+	song.AddNote(thirteenthTone, quarter)
+	song.AddNote(fourteenthTone, quarter)
+	song.AddNote(fifteenthTone, quarter)
+	song.AddNote(sixteenthTone, quarter)
+	song.AddNote(seventeenthTone, quarter)
+	song.AddNote(eighteenthTone, quarter)
+	song.AddNote(nineteenthTone, quarter)
+	song.AddNote(twentiethTone, quarter)
+	song.AddNote(twentyfirstTone, quarter)
+	song.AddNote(twentysecondTone, quarter)
+	song.AddNote(twentythirdTone, quarter)
+	song.AddNote(twentyfourthTone, quarter)
+	song.AddNote(twentyfifthTone, quarter)
+	song.AddNote(twentysixthTone, quarter)
+	song.AddNote(twentyseventhTone, quarter)
+	song.AddNote(twentyeighthTone, quarter)
+	song.AddNote(twentyninthTone, quarter)
+	song.AddNote(thirtiethTone, quarter)
 
-	song.AddNote(unison, shortDur)
-	song.AddNote(secondTone, shortDur)
-	song.AddNote(thirdTone, shortDur)
-	song.AddNote(forthTone, shortDur)
-	song.AddNote(fifthTone, shortDur)
-	song.AddNote(sixthTone, shortDur)
-	song.AddNote(seventhTone, shortDur)
-	song.AddNote(eighthTone, shortDur)
-	song.AddNote(ninthTone, shortDur)
-	song.AddNote(tenthTone, shortDur)
-	song.AddNote(eleventhTone, shortDur)
-	song.AddNote(twelfthTone, shortDur)
-	song.AddNote(thirteenthTone, shortDur)
-	song.AddNote(fourteenthTone, shortDur)
-	song.AddNote(fifteenthTone, shortDur)
-	song.AddNote(sixteenthTone, shortDur)
-	song.AddNote(seventeenthTone, shortDur)
-	song.AddNote(eighteenthTone, shortDur)
-	song.AddNote(nineteenthTone, shortDur)
-	song.AddNote(twentiethTone, shortDur)
-	song.AddNote(twentyfirstTone, shortDur)
-	song.AddNote(twentysecondTone, shortDur)
-	song.AddNote(twentythirdTone, shortDur)
-	song.AddNote(twentyfourthTone, shortDur)
-	song.AddNote(twentyfifthTone, shortDur)
-	song.AddNote(twentysixthTone, shortDur)
-	song.AddNote(twentyseventhTone, shortDur)
-	song.AddNote(twentyeighthTone, shortDur)
-	song.AddNote(twentyninthTone, shortDur)
-	song.AddNote(thirtiethTone, shortDur)
+	song.AddNote(thirtiethTone, quarter)
+	song.AddNote(twentyninthTone, quarter)
+	song.AddNote(twentyeighthTone, quarter)
+	song.AddNote(twentyseventhTone, quarter)
+	song.AddNote(twentysixthTone, quarter)
+	song.AddNote(twentyfifthTone, quarter)
+	song.AddNote(twentyfourthTone, quarter)
+	song.AddNote(twentythirdTone, quarter)
+	song.AddNote(twentysecondTone, quarter)
+	song.AddNote(twentyfirstTone, quarter)
+	song.AddNote(twentiethTone, quarter)
+	song.AddNote(nineteenthTone, quarter)
+	song.AddNote(eighteenthTone, quarter)
+	song.AddNote(seventeenthTone, quarter)
+	song.AddNote(sixteenthTone, quarter)
+	song.AddNote(fifteenthTone, quarter)
+	song.AddNote(fourteenthTone, quarter)
+	song.AddNote(thirteenthTone, quarter)
+	song.AddNote(twelfthTone, quarter)
+	song.AddNote(eleventhTone, quarter)
+	song.AddNote(tenthTone, quarter)
+	song.AddNote(ninthTone, quarter)
+	song.AddNote(eighthTone, quarter)
+	song.AddNote(seventhTone, quarter)
+	song.AddNote(sixthTone, quarter)
+	song.AddNote(fifthTone, quarter)
+	song.AddNote(forthTone, quarter)
+	song.AddNote(thirdTone, quarter)
+	song.AddNote(secondTone, quarter)
+	song.AddNote(unison, quarter)
+
+	// 5-limit major triad (pure just intonation)
+	// 4:5:6 = 1/1 : 5/4 : 3/2
+	song.AddChord([]int{unison, tenthTone, eighteenthTone}, quarter)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone}, half)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone}, whole)
+
+	// 7-limit dominant seventh (septimal)
+	// 4:5:6:7 = 1/1 : 5/4 : 3/2 : 7/4
+	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, quarter)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, half)
+	song.AddChord([]int{unison, tenthTone, eighteenthTone, twentyfifthTone}, whole)
+
+	/*
+		// 5-limit minor triad
+		// 10:12:15 = 1/1 : 6/5 : 3/2
+		song.AddChord([]int{unison, eighthTone, eighteenthTone}, quarter)
+
+
+		// 7-limit minor with septimal seventh
+		// 10:12:15:18 approximation, but using 7/4 on top
+		song.AddChord([]int{unison, eighthTone, eighteenthTone, twentyfifthTone}, quarter)
+			// 11-limit "alpha chord" - features the characteristic 11/8
+			// 8:10:11:12 = 1/1 : 5/4 : 11/8 : 3/2
+			song.AddChord([]int{unison, tenthTone, fourteenthTone, eighteenthTone}, quarter)
+
+			// Suspended 11 flavor
+			// Using 1/1 : 4/3 : 11/8 : 3/2
+			song.AddChord([]int{unison, thirteenthTone, fourteenthTone, eighteenthTone}, quarter)
+
+			// 11-limit minor with undecimal color
+			// 1/1 : 6/5 : 11/8 : 3/2
+			song.AddChord([]int{unison, eighthTone, fourteenthTone, eighteenthTone}, quarter)
+
+			// Septimal tritone chord (very tense!)
+			// 1/1 : 7/5 : 10/7 (sqrt of 2 approximation area)
+			song.AddChord([]int{unison, fifteenthTone, sixteenthTone}, quarter)
+
+			// 11-limit extended harmony pentad
+			// 8:10:12:14:11 rearranged = 1/1 : 5/4 : 11/8 : 3/2 : 7/4
+			song.AddChord([]int{unison, tenthTone, fourteenthTone, eighteenthTone, twentyfifthTone}, quarter)
+
+			// Quartal stack with 11-limit color
+			// 1/1 : 4/3 : 16/11 (approximates quartal but with 11-limit flavor)
+			song.AddChord([]int{unison, thirteenthTone, seventeenthTone}, quarter)
+	*/
 
 	return song.Play()
 
